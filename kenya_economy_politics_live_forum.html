@@ -1,0 +1,457 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans)}
+.app{min-height:600px}
+
+.topbar{background:#0a1628;padding:0 16px;height:52px;display:flex;align-items:center;justify-content:space-between;border-radius:var(--border-radius-lg) var(--border-radius-lg) 0 0}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;font-size:15px;font-weight:500}
+.flag{display:flex;flex-direction:column;width:5px;height:18px;border-radius:2px;overflow:hidden;flex-shrink:0}
+.flag span{flex:1}
+.topnav{display:flex;gap:4px;align-items:center}
+.tnav{background:transparent;border:0.5px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.75);padding:4px 12px;border-radius:20px;font-size:12px;cursor:pointer;font-family:var(--font-sans)}
+.tnav:hover,.tnav.on{background:rgba(255,255,255,0.12);color:#fff;border-color:rgba(255,255,255,0.5)}
+.user-chip{font-size:12px;color:#C8A951;margin-right:4px}
+
+.hero{background:#0d1f3c;padding:22px 16px 20px;border-bottom:2px solid #BB0000;text-align:center}
+.hero-title{font-family:var(--font-serif);font-size:22px;color:#fff;font-weight:500;margin-bottom:4px}
+.hero-title em{color:#C8A951;font-style:normal}
+.hero-sub{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:10px}
+.hstripe{display:flex;height:3px;width:120px;margin:0 auto;border-radius:2px;overflow:hidden}
+.hstripe span{flex:1}
+
+.body{padding:14px;background:var(--color-background-tertiary)}
+.layout{display:grid;grid-template-columns:1fr 220px;gap:14px}
+.main{}
+.sidebar{}
+
+.sec{display:none}.sec.on{display:block}
+
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px;margin-bottom:12px}
+.card-title{font-size:14px;font-weight:500;color:var(--color-text-primary);margin-bottom:12px;display:flex;align-items:center;gap:6px}
+
+input,select,textarea{font-family:var(--font-sans);font-size:13px;color:var(--color-text-primary);background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:8px 10px;outline:none;width:100%}
+input:focus,select:focus,textarea:focus{border-color:#006600}
+textarea{resize:vertical;min-height:72px}
+.row{display:flex;gap:8px;margin-bottom:8px}
+.row input,.row select{flex:1}
+.form-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;gap:8px;flex-wrap:wrap}
+.note{font-size:11px;color:var(--color-text-secondary)}
+
+.btn-g{background:#006600;color:#fff;border:none;padding:7px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)}
+.btn-g:hover{background:#004d00}
+.btn-r{background:#BB0000;color:#fff;border:none;padding:7px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-sans)}
+.btn-r:hover{background:#8a0000}
+.btn-o{background:transparent;border:0.5px solid var(--color-border-secondary);color:var(--color-text-primary);padding:6px 14px;border-radius:20px;font-size:12px;cursor:pointer;font-family:var(--font-sans)}
+.btn-o:hover{background:var(--color-background-secondary)}
+
+.filters{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.pill{padding:4px 12px;border-radius:20px;border:0.5px solid var(--color-border-secondary);background:transparent;font-size:11px;color:var(--color-text-secondary);cursor:pointer}
+.pill:hover{border-color:var(--color-border-primary);color:var(--color-text-primary)}
+.pill.on{background:#0d1f3c;color:#fff;border-color:#0d1f3c}
+
+.sbar{position:relative;margin-bottom:10px}
+.sbar input{padding-left:30px}
+.sico{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--color-text-secondary);font-size:14px}
+
+.post{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:14px 16px;margin-bottom:10px;transition:border-color .15s}
+.post:hover{border-color:var(--color-border-secondary)}
+.ph{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px}
+.ptitle{font-size:14px;font-weight:500;color:var(--color-text-primary);line-height:1.35;flex:1}
+.badge{font-size:10px;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.pbody{font-size:12px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:10px}
+.pfoot{display:flex;align-items:center;justify-content:space-between}
+.pmeta{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--color-text-secondary)}
+.av{width:20px;height:20px;border-radius:50%;background:var(--color-background-info);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;color:var(--color-text-info);flex-shrink:0}
+.pacts{display:flex;gap:6px}
+.abtn{background:none;border:0.5px solid var(--color-border-tertiary);padding:3px 10px;border-radius:20px;font-size:11px;color:var(--color-text-secondary);cursor:pointer;display:flex;align-items:center;gap:4px;font-family:var(--font-sans)}
+.abtn:hover{border-color:var(--color-border-secondary);color:var(--color-text-primary)}
+.abtn.liked{background:#FCEBEB;border-color:#F09595;color:#A32D2D}
+.delbtn{background:none;border:none;color:var(--color-text-tertiary);cursor:pointer;font-size:11px;padding:2px 5px}
+.delbtn:hover{color:var(--color-text-danger)}
+
+.scrd{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px;margin-bottom:10px}
+.stitle{font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.srow{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.srow:last-child{border:none}
+.sval{font-weight:500;color:#006600}
+.citem{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;cursor:pointer;color:var(--color-text-secondary)}
+.citem:hover{color:#006600}
+.cct{font-size:10px;color:var(--color-text-tertiary)}
+
+.empty{text-align:center;padding:40px 16px;color:var(--color-text-secondary);font-size:13px}
+.spin{width:20px;height:20px;border:2px solid var(--color-border-secondary);border-top-color:#006600;border-radius:50%;animation:sp .6s linear infinite;margin:0 auto 8px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.modal-wrap{display:none;position:absolute;inset:0;background:rgba(0,0,0,0.45);z-index:50;align-items:center;justify-content:center;border-radius:var(--border-radius-lg)}
+.modal-wrap.open{display:flex}
+.modal{background:var(--color-background-primary);border-radius:var(--border-radius-lg);padding:22px;width:100%;max-width:320px;border:0.5px solid var(--color-border-secondary)}
+.modal h3{font-size:16px;font-weight:500;margin-bottom:14px}
+.modal input{margin-bottom:8px}
+.merr{font-size:11px;color:var(--color-text-danger);min-height:14px;margin-bottom:6px}
+.mfoot{display:flex;justify-content:space-between;align-items:center;margin-top:4px;gap:8px}
+.mswitch{font-size:11px;color:var(--color-text-secondary);cursor:pointer;text-decoration:underline;background:none;border:none;font-family:var(--font-sans)}
+
+.ai-box{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;font-size:12px;color:var(--color-text-primary);line-height:1.65;margin-top:8px}
+.ai-thinking{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-secondary)}
+.dot-ani span{display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--color-text-secondary);margin:0 1px;animation:dot 1s infinite}
+.dot-ani span:nth-child(2){animation-delay:.2s}
+.dot-ani span:nth-child(3){animation-delay:.4s}
+@keyframes dot{0%,80%,100%{opacity:.2}40%{opacity:1}}
+
+.toast{background:#0d1f3c;color:#fff;padding:8px 16px;border-radius:20px;font-size:12px;text-align:center;margin-bottom:10px;display:none}
+.toast.show{display:block}
+</style>
+
+<div class="app" style="position:relative">
+
+<div class="topbar">
+  <div class="brand">
+    <div class="flag"><span style="background:#BB0000"></span><span style="background:#fff"></span><span style="background:#006600"></span></div>
+    Kenya Forum
+  </div>
+  <div class="topnav">
+    <button class="tnav on" onclick="nav('forum',this)">Forum</button>
+    <button class="tnav" onclick="nav('about',this)">About</button>
+    <button class="tnav" onclick="nav('ai',this)">Ask AI</button>
+    <span class="user-chip" id="uchip"></span>
+    <button class="tnav" id="authbtn" onclick="openModal('login')">Sign in</button>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-title">Kenya <em>Economy</em> &amp; Politics</div>
+  <div class="hero-sub">Open civic dialogue — share insights, debate ideas, learn together</div>
+  <div class="hstripe"><span style="background:#BB0000"></span><span style="background:#fff"></span><span style="background:#006600"></span></div>
+</div>
+
+<div class="body">
+<div class="layout">
+<div class="main">
+
+<div id="toast" class="toast"></div>
+
+<div id="s-forum" class="sec on">
+  <div class="card">
+    <div class="card-title"><i class="ti ti-pencil" style="font-size:15px" aria-hidden="true"></i> Share an insight</div>
+    <div id="ok-toast" style="display:none;background:#EAF3DE;color:#27500A;padding:7px 10px;border-radius:var(--border-radius-md);font-size:12px;margin-bottom:8px;border:0.5px solid #97C459">Post published!</div>
+    <div class="row">
+      <input id="p-title" placeholder="Title — e.g. 'Inflation and small traders in Nairobi'" />
+    </div>
+    <div class="row">
+      <select id="p-cat">
+        <option value="Economy">Economy</option>
+        <option value="Politics">Politics</option>
+        <option value="Agriculture">Agriculture</option>
+        <option value="Investment">Investment</option>
+        <option value="Governance">Governance</option>
+      </select>
+      <input id="p-name" placeholder="Your name (optional)" />
+    </div>
+    <textarea id="p-body" placeholder="Share your analysis, question, or perspective..."></textarea>
+    <div class="form-foot">
+      <span class="note" id="compose-note">Post as guest or sign in to use your account.</span>
+      <button class="btn-g" onclick="submitPost()"><i class="ti ti-send" style="font-size:12px;vertical-align:-1px" aria-hidden="true"></i> Publish</button>
+    </div>
+  </div>
+
+  <div class="sbar"><i class="ti ti-search sico" aria-hidden="true"></i><input id="search" placeholder="Search posts..." oninput="loadPosts()"/></div>
+  <div class="filters" id="filters"></div>
+  <div id="feed"></div>
+</div>
+
+<div id="s-about" class="sec">
+  <div class="card">
+    <div class="card-title"><i class="ti ti-info-circle" style="font-size:15px" aria-hidden="true"></i> About this platform</div>
+    <p style="font-size:13px;color:var(--color-text-secondary);line-height:1.65;margin-bottom:10px">This forum is dedicated to open, informed discussion about the Kenyan economy and politics. Politics and economy are two deeply intertwined forces — government policies on taxation, land, and investment directly shape agriculture, manufacturing, and services.</p>
+    <p style="font-size:13px;color:var(--color-text-secondary);line-height:1.65;margin-bottom:12px">Founded by <strong style="color:var(--color-text-primary)">Ominde Agrey</strong>, a web developer passionate about civic technology and knowledge sharing.</p>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <a href="https://omindeagrey204-eng.github.io" style="font-size:13px;color:#006600;display:flex;align-items:center;gap:4px" target="_blank"><i class="ti ti-world" style="font-size:14px" aria-hidden="true"></i> omindeagrey204-eng.github.io</a>
+      <a href="mailto:omindeagrey204@gmail.com" style="font-size:13px;color:#006600;display:flex;align-items:center;gap:4px"><i class="ti ti-mail" style="font-size:14px" aria-hidden="true"></i> omindeagrey204@gmail.com</a>
+    </div>
+  </div>
+</div>
+
+<div id="s-ai" class="sec">
+  <div class="card">
+    <div class="card-title"><i class="ti ti-brain" style="font-size:15px" aria-hidden="true"></i> Ask AI about Kenya</div>
+    <p style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px">Get AI-powered analysis on Kenya's economy, politics, and governance.</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="ai-quick"></div>
+    <div class="row" style="margin-bottom:8px">
+      <input id="ai-q" placeholder="Ask anything about Kenya's economy or politics..." onkeydown="if(event.key==='Enter')askAI()"/>
+      <button class="btn-g" style="flex-shrink:0;white-space:nowrap" onclick="askAI()">Ask ↗</button>
+    </div>
+    <div id="ai-out"></div>
+  </div>
+</div>
+
+</div>
+
+<aside class="sidebar">
+  <div class="scrd">
+    <div class="stitle">Forum stats</div>
+    <div class="srow"><span>Total posts</span><span class="sval" id="sb-total">0</span></div>
+    <div class="srow"><span>Members</span><span class="sval">128</span></div>
+    <div class="srow"><span>New today</span><span class="sval" id="sb-today">0</span></div>
+  </div>
+  <div class="scrd">
+    <div class="stitle">Browse topics</div>
+    <div id="sb-cats"></div>
+  </div>
+  <div class="scrd">
+    <div class="stitle">About</div>
+    <p style="font-size:11px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:8px">Civic forum by Ominde Agrey. Open to all Kenyans.</p>
+    <a href="mailto:omindeagrey204@gmail.com" style="font-size:11px;color:#006600;display:flex;align-items:center;gap:4px"><i class="ti ti-mail" style="font-size:13px" aria-hidden="true"></i> Get in touch</a>
+  </div>
+</aside>
+
+</div>
+</div>
+
+<div class="modal-wrap" id="mwrap" onclick="closeMBg(event)">
+  <div class="modal">
+    <h3 id="mtitle">Sign in</h3>
+    <div class="merr" id="merr"></div>
+    <div id="mreg" style="display:none"><input id="m-user" placeholder="Username" /></div>
+    <input id="m-email" type="email" placeholder="Email" />
+    <input id="m-pass" type="password" placeholder="Password" onkeydown="if(event.key==='Enter')doAuth()"/>
+    <div class="mfoot">
+      <button class="mswitch" id="mswitch" onclick="toggleMode()">No account? Register</button>
+      <button class="btn-g" onclick="doAuth()">Continue</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const CAT = {
+  Economy:    {bg:'#EAF3DE',tx:'#27500A',br:'#97C459'},
+  Politics:   {bg:'#EEEDFE',tx:'#3C3489',br:'#AFA9EC'},
+  Agriculture:{bg:'#E1F5EE',tx:'#085041',br:'#5DCAA5'},
+  Investment: {bg:'#E6F1FB',tx:'#0C447C',br:'#85B7EB'},
+  Governance: {bg:'#FAEEDA',tx:'#633806',br:'#EF9F27'},
+};
+
+let token = null, me = null;
+let liked = JSON.parse(localStorage.getItem('kf_liked')||'[]');
+let todayNew = 0;
+let mmode = 'login';
+let posts = [];
+
+const SEEDS = [
+  {id:'s1',title:'How government subsidies shape smallholder farming',content:'Fertiliser subsidies have directly impacted maize yields in the Rift Valley. When input costs rise due to policy shifts, food prices ripple across urban centres within weeks.',author:'Wanjiku M.',category:'Agriculture',time:'3 days ago',likes:14,ts:Date.now()-3*86400000},
+  {id:'s2',title:'Foreign direct investment and political stability',content:'Investors watch governance indices closely. The 2022 election cycle saw a 12% dip in FDI commitments — a pattern that repeats with every contested election. Stable institutions matter more than individual leaders.',author:'Brian O.',category:'Investment',time:'2 days ago',likes:9,ts:Date.now()-2*86400000},
+  {id:'s3',title:'Youth unemployment — structural crisis or policy failure?',content:'With 67% of Kenyans under 35, the youth unemployment rate demands urgent attention. Entrepreneurship hubs are promising but lack consistent government backing and access to credit.',author:'Amara K.',category:'Economy',time:'1 day ago',likes:23,ts:Date.now()-86400000},
+  {id:'s4',title:'Devolution and county economic development',content:'County governments were meant to decentralise development. A decade in, fiscal accountability gaps and capacity shortfalls continue to hamper local growth in many regions.',author:'Ominde Agrey',category:'Governance',time:'5 hours ago',likes:6,ts:Date.now()-18000000},
+  {id:'s5',title:'The cost of Kenya\'s public debt on social services',content:'Kenya\'s debt-to-GDP ratio has climbed steeply. The IMF warns that debt servicing costs are crowding out spending on health and education — sectors critical to long-term growth.',author:'Njeri W.',category:'Economy',time:'2 hours ago',likes:11,ts:Date.now()-7200000},
+];
+
+posts = SEEDS.map(p=>({...p,liked:liked.includes(p.id)}));
+
+function nav(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.tnav').forEach(b=>b.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  btn.classList.add('on');
+  if(id==='ai') buildQuickPrompts();
+}
+
+function toast(msg,dur=2500){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),dur);
+}
+
+function updateAuth(){
+  const c=document.getElementById('uchip');
+  const b=document.getElementById('authbtn');
+  const n=document.getElementById('compose-note');
+  if(me){c.textContent='Hi, '+me;b.textContent='Sign out';b.onclick=signOut;n.textContent='Posting as '+me+'.';}
+  else{c.textContent='';b.textContent='Sign in';b.onclick=()=>openModal('login');n.textContent='Post as guest or sign in.';}
+}
+
+function signOut(){token=null;me=null;updateAuth();toast('Signed out.');}
+
+let mopen=false;
+function openModal(mode){mmode=mode;mopen=true;document.getElementById('mwrap').classList.add('open');document.getElementById('merr').textContent='';document.getElementById('mtitle').textContent=mode==='login'?'Sign in':'Create account';document.getElementById('mswitch').textContent=mode==='login'?'No account? Register':'Have an account? Sign in';document.getElementById('mreg').style.display=mode==='register'?'block':'none';}
+function closeModal(){document.getElementById('mwrap').classList.remove('open');mopen=false;}
+function closeMBg(e){if(e.target===document.getElementById('mwrap'))closeModal();}
+function toggleMode(){openModal(mmode==='login'?'register':'login');}
+
+function doAuth(){
+  const email=document.getElementById('m-email').value.trim();
+  const pass=document.getElementById('m-pass').value;
+  const err=document.getElementById('merr');
+  if(!email||!pass){err.textContent='Please fill in all fields.';return;}
+  if(mmode==='register'){
+    const user=document.getElementById('m-user').value.trim();
+    if(!user){err.textContent='Username required.';return;}
+    me=user;
+  } else {
+    me=email.split('@')[0];
+  }
+  token='demo_'+me;
+  localStorage.setItem('kf_me',me);
+  closeModal();updateAuth();toast('Welcome, '+me+'!');
+}
+
+function buildFilters(){
+  const cats=['All','Economy','Politics','Agriculture','Investment','Governance'];
+  document.getElementById('filters').innerHTML=cats.map(c=>`<button class="pill${c==='All'&&!window._af?' on':c===window._af?' on':''}" onclick="setFilter('${c}',this)">${c}</button>`).join('');
+}
+
+function setFilter(cat,btn){
+  window._af=cat;
+  document.querySelectorAll('.pill').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderPosts();
+}
+window._af='All';
+
+function loadPosts(){renderPosts();}
+
+function renderPosts(){
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  const af=window._af||'All';
+  let list=posts.filter(p=>{
+    const mc=af==='All'||p.category===af;
+    const mq=!q||p.title.toLowerCase().includes(q)||p.content.toLowerCase().includes(q);
+    return mc&&mq;
+  }).slice().sort((a,b)=>b.ts-a.ts);
+
+  document.getElementById('sb-total').textContent=posts.length;
+  renderSbCats();
+
+  const feed=document.getElementById('feed');
+  if(!list.length){feed.innerHTML='<div class="empty"><i class="ti ti-inbox" style="font-size:28px;display:block;margin:0 auto 8px;opacity:.4" aria-hidden="true"></i>No posts found.</div>';return;}
+  feed.innerHTML=list.map(p=>{
+    const c=CAT[p.category]||CAT.Economy;
+    const isOwn=me&&p.author===me;
+    return `<div class="post" id="pc-${p.id}">
+      <div class="ph">
+        <div class="ptitle">${esc(p.title)}</div>
+        <span class="badge" style="background:${c.bg};color:${c.tx};border:0.5px solid ${c.br}">${p.category}</span>
+      </div>
+      <div class="pbody">${esc(p.content)}</div>
+      <div class="pfoot">
+        <div class="pmeta">
+          <div class="av">${p.author.slice(0,2).toUpperCase()}</div>
+          <span>${esc(p.author)}</span>
+          <span style="color:var(--color-border-secondary)">·</span>
+          <span>${p.time}</span>
+        </div>
+        <div class="pacts">
+          <button class="abtn${p.liked?' liked':''}" onclick="likePost('${p.id}',this)" aria-label="Like">
+            <i class="ti ti-heart" style="font-size:12px" aria-hidden="true"></i>
+            <span id="lc-${p.id}">${p.likes}</span>
+          </button>
+          <button class="abtn" onclick="askAboutPost('${esc(p.title)}')" aria-label="Discuss with AI">
+            <i class="ti ti-message" style="font-size:12px" aria-hidden="true"></i> Discuss
+          </button>
+          ${isOwn?`<button class="delbtn" onclick="delPost('${p.id}')" aria-label="Delete"><i class="ti ti-trash" style="font-size:12px" aria-hidden="true"></i></button>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderSbCats(){
+  const counts={};
+  posts.forEach(p=>counts[p.category]=(counts[p.category]||0)+1);
+  document.getElementById('sb-cats').innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([cat,n])=>
+    `<div class="citem" onclick="setFilterSb('${cat}')"><span>${cat}</span><span class="cct">${n}</span></div>`
+  ).join('');
+}
+
+function setFilterSb(cat){
+  window._af=cat;
+  buildFilters();
+  nav('forum',document.querySelector('.tnav'));
+  renderPosts();
+}
+
+function likePost(id,btn){
+  const p=posts.find(x=>x.id===id);if(!p)return;
+  p.liked=!p.liked;p.likes+=p.liked?1:-1;
+  if(p.liked)liked.push(id);else liked=liked.filter(x=>x!==id);
+  localStorage.setItem('kf_liked',JSON.stringify(liked));
+  btn.classList.toggle('liked',p.liked);
+  document.getElementById('lc-'+id).textContent=p.likes;
+}
+
+function delPost(id){
+  if(!confirm('Delete this post?'))return;
+  posts=posts.filter(p=>p.id!==id);
+  renderPosts();toast('Post deleted.');
+}
+
+function submitPost(){
+  const title=document.getElementById('p-title').value.trim();
+  const body=document.getElementById('p-body').value.trim();
+  const cat=document.getElementById('p-cat').value;
+  const name=document.getElementById('p-name').value.trim()||(me||'Anonymous');
+  if(!title||!body){toast('Please add a title and content.');return;}
+  const id='u'+Date.now();
+  posts.unshift({id,title,content:body,category:cat,author:name,time:'Just now',likes:0,liked:false,ts:Date.now()});
+  document.getElementById('p-title').value='';
+  document.getElementById('p-body').value='';
+  document.getElementById('p-name').value='';
+  todayNew++;document.getElementById('sb-today').textContent=todayNew;
+  const ok=document.getElementById('ok-toast');ok.style.display='block';setTimeout(()=>ok.style.display='none',2800);
+  renderPosts();
+}
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+const QUICK_Qs=[
+  'What are the biggest economic challenges facing Kenya in 2025?',
+  'How does political instability affect foreign investment in Kenya?',
+  'What is Kenya\'s debt situation and how does it affect services?',
+  'How can Kenya reduce youth unemployment?',
+  'What role does agriculture play in Kenya\'s GDP?',
+];
+
+function buildQuickPrompts(){
+  document.getElementById('ai-quick').innerHTML=QUICK_Qs.map(q=>
+    `<button class="btn-o" style="font-size:11px" onclick="setAIQ(this,'${q.replace(/'/g,"\\'")}')">${q.length>40?q.slice(0,40)+'…':q}</button>`
+  ).join('');
+}
+
+function setAIQ(btn,q){document.getElementById('ai-q').value=q;askAI();}
+
+async function askAI(){
+  const q=document.getElementById('ai-q').value.trim();
+  if(!q)return;
+  const out=document.getElementById('ai-out');
+  out.innerHTML=`<div class="ai-thinking"><div class="spin" style="width:16px;height:16px;flex-shrink:0"></div> Analysing…</div>`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:'You are a knowledgeable analyst specialising in Kenyan economics, politics, and governance. Give clear, balanced, informative answers. Be concise but substantive. Use plain language. Cite relevant context about Kenya where helpful.',
+        messages:[{role:'user',content:q}]
+      })
+    });
+    const data=await res.json();
+    const text=data.content?.map(b=>b.text||'').join('')||'No response.';
+    out.innerHTML=`<div class="ai-box"><strong style="font-size:11px;color:var(--color-text-secondary);display:block;margin-bottom:4px"><i class="ti ti-sparkles" style="font-size:12px;vertical-align:-1px" aria-hidden="true"></i> AI response</strong>${esc(text).replace(/\n/g,'<br>')}</div>`;
+  } catch(e){
+    out.innerHTML=`<div class="ai-box" style="color:var(--color-text-danger)">Could not reach AI. Check connection.</div>`;
+  }
+}
+
+function askAboutPost(title){
+  nav('ai',document.querySelectorAll('.tnav')[2]);
+  document.getElementById('ai-q').value='Tell me more about this topic: '+title;
+  askAI();
+}
+
+buildFilters();
+updateAuth();
+renderPosts();
+buildQuickPrompts();
+</script>
